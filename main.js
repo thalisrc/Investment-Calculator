@@ -140,7 +140,7 @@ function clearForm() {
   }
 }
 
-form.addEventListener('submit', renderProgression);
+//form.addEventListener('submit', renderProgression);
 
 function validateInput(event) {
   if (event.target.value === '') {
