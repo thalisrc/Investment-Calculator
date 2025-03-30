@@ -37,6 +37,10 @@ function formatCurrency(value) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
+function formatCurrencyToGraph(value) {
+  return value.toFixed(2);
+}
+
 function renderProgression(event) {
   event.preventDefault();
   if (document.querySelector('.error')) {
@@ -70,67 +74,67 @@ function renderProgression(event) {
     returnRatePeriod
   );
 
-  // const finalInvestmentObject = returnsArray[returnsArray.length - 1];
+  const finalInvestmentObject = returnsArray[returnsArray.length - 1];
 
-  // donnutReference = new Chart(finalMoneyChart, {
-  //   type: 'doughnut',
-  //   data: {
-  //     labels: ['Total Investido', 'Rendimento', 'Imposto'],
-  //     datasets: [
-  //       {
-  //         data: [
-  //           formatCurrency(finalInvestmentObject.investedAmount),
-  //           formatCurrency(
-  //             finalInvestmentObject.totalInterestReturns * (1 - taxRate / 100)
-  //           ),
-  //           formatCurrency(
-  //             finalInvestmentObject.totalInterestReturns * (taxRate / 100)
-  //           ),
-  //         ],
-  //         backgroundColor: [
-  //           'rgb(255, 99, 132)',
-  //           'rgb(54, 162, 235)',
-  //           'rgb(255, 205, 86)',
-  //         ],
-  //         hoverOffset: 4,
-  //       },
-  //     ],
-  //   },
-  // });
+  donnutReference = new Chart(finalMoneyChart, {
+    type: 'doughnut',
+    data: {
+      labels: ['Total Investido', 'Rendimento', 'Imposto'],
+      datasets: [
+        {
+          data: [
+            formatCurrencyToGraph(finalInvestmentObject.investedAmount),
+            formatCurrencyToGraph(
+              finalInvestmentObject.totalInterestReturns * (1 - taxRate / 100)
+            ),
+            formatCurrencyToGraph(
+              finalInvestmentObject.totalInterestReturns * (taxRate / 100)
+            ),
+          ],
+          backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)',
+          ],
+          hoverOffset: 4,
+        },
+      ],
+    },
+  });
 
-  // progressionChartReference = new Chart(progressionChart, {
-  //   type: 'bar',
-  //   data: {
-  //     labels: returnsArray.map((investObject) => investObject.month),
-  //     datasets: [
-  //       {
-  //         label: 'Total Investido',
-  //         data: returnsArray.map((investObject) =>
-  //           formatCurrency(investObject.investedAmount)
-  //         ),
-  //         backgroundColor: 'rgb(255, 99, 132)',
-  //       },
-  //       {
-  //         label: 'Retorno de Investimento',
-  //         backgroundColor: 'rgb(54, 162, 235)',
-  //         data: returnsArray.map((investObject) =>
-  //           formatCurrency(investObject.interestReturns)
-  //         ),
-  //       },
-  //     ],
-  //   },
-  //   options: {
-  //     responsive: true,
-  //     scales: {
-  //       x: {
-  //         stacked: true,
-  //       },
-  //       y: {
-  //         stacked: true,
-  //       },
-  //     },
-  //   },
-  // });
+  progressionChartReference = new Chart(progressionChart, {
+    type: 'bar',
+    data: {
+      labels: returnsArray.map((investObject) => investObject.month),
+      datasets: [
+        {
+          label: 'Total Investido',
+          data: returnsArray.map((investObject) =>
+            formatCurrencyToGraph(investObject.investedAmount)
+          ),
+          backgroundColor: 'rgb(255, 99, 132)',
+        },
+        {
+          label: 'Retorno de Investimento',
+          backgroundColor: 'rgb(54, 162, 235)',
+          data: returnsArray.map((investObject) =>
+            formatCurrencyToGraph(investObject.interestReturns)
+          ),
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          stacked: true,
+        },
+        y: {
+          stacked: true,
+        },
+      },
+    },
+  });
 
   createTable(columnsArray, returnsArray, 'results-table');
 }
@@ -204,3 +208,16 @@ for (const formElement of form) {
 }
 
 clearFormButton.addEventListener('click', clearForm);
+
+const mainEl = document.querySelector('main');
+const cauroselEl = document.getElementById('carousel');
+const nextButton = document.getElementById('slide-arrow-next');
+const previousButton = document.getElementById('slide-arrow-previous');
+
+nextButton.addEventListener('click', () => {
+  cauroselEl.scrollLeft += mainEl.clientWidth;
+});
+
+previousButton.addEventListener('click', () => {
+  cauroselEl.scrollLeft -= mainEl.clientWidth;
+});
